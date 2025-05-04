@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,7 +38,7 @@ public class UserService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exists");
             }
 
-            User existingUserUsername = repo.findByUsername(user.getUsername());
+            User existingUserUsername = repo.findUserByUsername(user.getUsername());
             if (existingUserUsername != null) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this username already exists");
             }
@@ -63,5 +64,20 @@ public class UserService {
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public User findByUsername(String name) {
+        try{
+            User user = repo.findUserByUsername(name);
+
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found!");
+            }
+
+            return repo.findUserByUsername(name);
+        } catch (Exception e){
+            throw new UsernameNotFoundException("User not found!");
+        }
+
     }
 }
