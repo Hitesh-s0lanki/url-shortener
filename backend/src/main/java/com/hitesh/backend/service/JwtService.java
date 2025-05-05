@@ -26,22 +26,23 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private int expireTime;
 
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    public JwtService(){
-        secretKey = generateSecretKey();
-    }
+//    public JwtService(){
+//        secretKey = generateSecretKey();
+//    }
 
-    public String generateSecretKey() {
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey secretKey = keyGen.generateKey();
-            System.out.println("Secret Key : " + secretKey.toString());
-            return Base64.getEncoder().encodeToString(secretKey.getEncoded());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error generating secret key", e);
-        }
-    }
+//    public String generateSecretKey() {
+//        try {
+//            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+//            SecretKey secretKey = keyGen.generateKey();
+//            System.out.println("Secret Key : " + secretKey.toString());
+//            return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+//        } catch (NoSuchAlgorithmException e) {
+//            throw new RuntimeException("Error generating secret key", e);
+//        }
+//    }
 
     // Get the JWT token from the
     public String getJwtFromHeader(HttpServletRequest request) {
