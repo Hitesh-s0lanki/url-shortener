@@ -5,10 +5,9 @@ import com.hitesh.backend.model.User;
 import com.hitesh.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,6 +24,11 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
         return service.loginUser(loginDto);
+    }
+
+    @GetMapping("details")
+    public ResponseEntity<?> details(Principal principal) {
+        return ResponseEntity.ok(service.findByUsername(principal.getName()));
     }
 
 }
